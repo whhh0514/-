@@ -29,13 +29,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- 在此输入页面标题 -->
   <title>我的收藏 - 听见古韵</title>
 
   <!-- 先引入全站通用样式 -->
   <link rel="stylesheet" href="./css/common.css" />
 
-  <!-- 再引入本页自己的样式（可选） -->
+  <!-- 再引入本页自己的样式 -->
   <link rel="stylesheet" href="./css/favorites.css" />
 </head>
 
@@ -43,7 +42,7 @@
   <div id="site-header"></div>
 
   <main id="app" class="container">
-    <!-- 这个页面自己的内容放这里 -->
+    <!-- 页面标题 -->
     <h1 class="page-title">我的收藏</h1>
     
     <!-- 收藏列表容器 -->
@@ -51,16 +50,19 @@
     
     <!-- 空状态容器（默认隐藏） -->
     <div class="empty-state" id="emptyState">
-      <p>你还没有收藏任何乐器~</p>
+      <div class="empty-icon">📜</div>
+      <p class="empty-text">你还没有收藏任何乐器~</p>
       <a href="./gallery.html" class="empty-btn">去图鉴页收藏</a>
     </div>
   </main>
 
   <div id="site-footer"></div>
 
+  <!-- 通用脚本（导航/页脚） -->
   <script src="./js/common.js" defer></script>
-  <!-- 引入data.js（依赖乐器数据，需放在favorites.js之前） -->
+  <!-- 乐器数据（必须在favorites.js前加载） -->
   <script src="./js/data.js" defer></script>
+  <!-- 收藏页核心逻辑 -->
   <script src="./js/favorites.js" defer></script>
 </body>
 </html>
