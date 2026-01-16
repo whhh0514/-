@@ -1,15 +1,15 @@
-/* 收藏页通用样式 */
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
+/* 收藏页特有样式（公共样式已在common.css中定义，无需重复） */
+
+/* 页面内容容器补充（基于common.css的.container扩展） */
+#app.container {
   padding: 40px 0;
 }
 
+/* 页面标题（适配全局配色） */
 .page-title {
   text-align: center;
   font-size: 2rem;
-  color: #333;
+  color: var(--text); /* 使用全局墨黑变量 */
   margin-bottom: 40px;
   font-weight: 600;
 }
@@ -21,13 +21,14 @@
   gap: 24px;
 }
 
-/* 收藏卡片样式（产品化视觉） */
+/* 收藏卡片样式（产品化视觉 + 全局变量适配） */
 .favorite-card {
-  background: #fff;
+  background: var(--card); /* 使用全局卡片底色 */
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--border); /* 适配全局边框变量 */
 }
 
 .favorite-card:hover {
@@ -47,23 +48,24 @@
 
 .card-name {
   font-size: 1.25rem;
-  color: #222;
+  color: var(--text); /* 全局文字色 */
   margin-bottom: 8px;
   font-weight: 500;
 }
 
+/* 分类标签（适配全局朱砂色） */
 .card-category {
   display: inline-block;
   padding: 4px 12px;
-  background: #f5f0e8;
-  color: #c8553d;
+  background: rgba(178, 58, 47, 0.08); /* 朱砂色浅背景 */
+  color: var(--accent); /* 全局强调色（朱砂） */
   border-radius: 20px;
   font-size: 0.85rem;
   margin-bottom: 12px;
 }
 
 .card-desc {
-  color: #666;
+  color: var(--muted); /* 全局浅灰色 */
   font-size: 0.9rem;
   line-height: 1.6;
   margin-bottom: 16px;
@@ -73,13 +75,13 @@
   overflow: hidden;
 }
 
-/* 取消收藏按钮 */
+/* 取消收藏按钮（适配全局强调色） */
 .unfav-btn {
   width: 100%;
   padding: 10px 0;
-  background: #fff;
-  color: #c8553d;
-  border: 1px solid #c8553d;
+  background: transparent; /* 透明背景，贴合全局风格 */
+  color: var(--accent); /* 朱砂色文字 */
+  border: 1px solid var(--accent); /* 朱砂色边框 */
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.95rem;
@@ -87,8 +89,8 @@
 }
 
 .unfav-btn:hover {
-  background: #c8553d;
-  color: #fff;
+  background: var(--accent); /* hover时背景变朱砂色 */
+  color: white; /* 文字变白 */
 }
 
 /* 空状态样式 */
@@ -96,33 +98,37 @@
   text-align: center;
   padding: 80px 0;
   display: none; /* 默认隐藏 */
+  color: var(--muted); /* 浅灰色文字 */
 }
 
 .empty-icon {
   font-size: 4rem;
   margin-bottom: 20px;
-  color: #ccc;
+  color: var(--muted);
+  opacity: 0.7;
 }
 
 .empty-text {
   font-size: 1.1rem;
-  color: #999;
   margin-bottom: 30px;
 }
 
+/* 空状态跳转按钮（适配全局强调色） */
 .empty-btn {
   display: inline-block;
   padding: 12px 30px;
-  background: #c8553d;
-  color: #fff;
+  background: var(--accent); /* 朱砂色背景 */
+  color: white;
   border-radius: 8px;
   text-decoration: none;
   font-size: 1rem;
   transition: background 0.2s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .empty-btn:hover {
-  background: #b0462e;
+  background: #9c2f25; /* 朱砂色加深，提升hover体验 */
 }
 
 /* 响应式适配 */
@@ -134,4 +140,24 @@
   .page-title {
     font-size: 1.75rem;
   }
+
+  .card-content {
+    padding: 16px;
+  }
+}
+
+/* 提示框样式（补充，原JS中内联样式可移至此） */
+.toast-tip {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 20px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
