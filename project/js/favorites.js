@@ -1,15 +1,20 @@
 // 收藏页核心逻辑 - 基于localStorage(favIds)实现收藏列表/取消收藏/空状态
+// 适配common.js的公共API：getFavIds/updateFavBadge/fav:changed事件
 document.addEventListener('DOMContentLoaded', () => {
-  // 核心配置（严格驼峰命名，消除格式提示）
-  const FAV_KEY = 'favIds'; // 和gallery页约定的localStorage key
-  const favoritesListEl = document.getElementById('favoritesList'); // 正确驼峰命名
+  // 核心配置
+  const FAV_KEY = 'favIds'; // 和common.js保持一致的key
+  const favoritesListEl = document.getElementById('favoritesList');
   const emptyStateEl = document.getElementById('emptyState');
 
-  // 1. 读取localStorage中的收藏ID数组（异常捕获+容错）
+  // 1. 读取收藏ID数组（复用common.js的getFavIds，保证逻辑统一）
   function getFavoriteIds() {
+    // 优先使用common.js暴露的方法，兜底自己实现
+    if (typeof window.getFavIds === 'function') {
+      return window.getFavIds();
+    }
+    // 兜底逻辑（防止common.js加载失败）
     try {
       const favStr = localStorage.getItem(FAV_KEY);
-      // 解析失败/无数据时返回空数组
       return favStr ? JSON.parse(favStr) : [];
     } catch (error) {
       console.error('读取收藏ID失败:', error);
@@ -37,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (favoriteInstruments.length === 0) {
       favoritesListEl.style.display = 'none';
       emptyStateEl.style.display = 'block';
-      updateNavFavCount(); // 更新导航栏收藏数
+      updateNavFavCount(); // 更新导航收藏数
       return;
     }
 
@@ -64,11 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 绑定取消收藏事件
     bindUnfavoriteEvents();
-    // 更新导航栏收藏数
+    // 更新导航收藏数
     updateNavFavCount();
   }
 
-  // 4. 取消收藏逻辑（实时更新localStorage+列表）
+  // 4. 取消收藏逻辑（实时更新localStorage+列表+通知全局）
   function bindUnfavoriteEvents() {
     const unfavBtns = document.querySelectorAll('.unfav-btn');
     unfavBtns.forEach(btn => {
@@ -81,6 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // 更新localStorage
         localStorage.setItem(FAV_KEY, JSON.stringify(favIds));
         
+        // 触发全局收藏变化事件（通知common.js更新徽标）
+        window.dispatchEvent(new CustomEvent('fav:changed'));
+        
         // 重新渲染列表（实时更新）
         renderFavorites();
         // 轻量提示（产品化体验）
@@ -89,10 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. 辅助：更新导航栏收藏数（和common.js联动）
+  // 5. 辅助：更新导航栏收藏数（适配common.js的API）
   function updateNavFavCount() {
-    if (typeof window.updateNavFavCount === 'function') {
-      window.updateNavFavCount(); // 调用common.js的全局方法
+    // 调用common.js暴露的updateFavBadge方法
+    if (typeof window.updateFavBadge === 'function') {
+      window.updateFavBadge();
     }
   }
 
